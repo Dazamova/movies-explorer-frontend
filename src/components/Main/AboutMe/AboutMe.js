@@ -4,7 +4,7 @@ import student from "../../../images/main/student.png";
 
 export const AboutMe = () => {
   return (
-    <div className="about-me" id="aboutMe">
+    <section className="about-me" id="aboutMe">
       <SectionHeader header="Студент" />
       <div className="about-me__container">
         <div className="about-me__text-block">
@@ -13,10 +13,10 @@ export const AboutMe = () => {
             <h3 className="about-me__subheading">Начинающий фронтент разработчик, 26 лет</h3>
             <p className="about-me__paragraph">Из маленького города Шадринска я перебралась в Москву, получила высшее образование по специальности инженер-физик. После 3 лет работы в НИИ я решила сменить профессию на модную и молодежную. Вы наблюдаете мои первые, но уверенные шаги в веб-разработке.</p>
           </div>
-          <a className="about-me__link" href="https://github.com/Dazamova">Github</a>
+          <a className="about-me__link" target="_blank" rel="noreferrer" href="https://github.com/Dazamova">Github</a>
         </div>
         <img className="about-me__photo" src={student} alt="студент" />
       </div>
-    </div>
+    </section>
   )
 }

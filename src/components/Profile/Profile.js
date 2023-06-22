@@ -44,7 +44,7 @@ export const Profile = (props) => {
   }
 
   return (
-    <div className="profile">
+    <main className="profile">
       <h2 className="profile__heading">Привет, {name}!</h2>
       <form name="profile-form" className="profile__form" onSubmit={handleSubmit}>
         <div className="profile__inputs">
@@ -74,6 +74,6 @@ export const Profile = (props) => {
           }
         </div>
       </form>
-    </div>
+    </main>
   )
 }

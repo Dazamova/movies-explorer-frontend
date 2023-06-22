@@ -12,7 +12,7 @@ export const SavedMovies = () => {
   // }
 
   return (
-    <div className="saved-movies">
+    <main className="saved-movies">
       <SearchForm />
       <MoviesCardList>
         {/* <MoviesCard title={title} duration={duration} link={image1} isSaved={isSaved} onSaveCard={saveCard} /> */}
@@ -20,6 +20,6 @@ export const SavedMovies = () => {
         <MoviesCard title={title} duration={duration} link={image2} />
         <MoviesCard title={title} duration={duration} link={image3} />
       </MoviesCardList>
-    </div>
+    </main>
   )
 }

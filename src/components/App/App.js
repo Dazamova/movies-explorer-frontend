@@ -20,7 +20,7 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
   const [currentUser, setCurrentUser] = React.useState({ name: 'Виталий', email: '' });
   const [isNavBarOpen, setIsNavBarOpen] = React.useState(false);
-  const [isErrorPopupOpen, setIsErrorPopupOpen] = React.useState(true);
+  const [isErrorPopupOpen, setIsErrorPopupOpen] = React.useState(false);
 
   const [screenWidth, setScreenWidth] = React.useState(window.innerWidth);
 
@@ -86,67 +86,65 @@ function App() {
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
-      <body>
-        <div className="app">
-          {/* {pathname !== "*" && <Header />} */}
-          <Routes>
-            <Route path="signin" element={
-              <>
-                <Container type="auth">
-                  <Header isAuth={true} isLoggedIn={false} isMain={false} />
-                  <Login onSubmit={handleSignIn} />
-                </Container>
-              </>
-            } />
-            <Route path="signup" element={
-              <>
-                <Container type="auth">
-                  <Header isAuth={true} isLoggedIn={false} isMain={false} />
-                  <Register onSubmit={handleSignUp} />
-                </Container>
-              </>
-            } />
-            <Route path="/" element={
-              <>
-                <Header isAuth={false} isMain={true} isNavBarOpen={isNavBarOpen} onNavBarButtonClick={handleNavBarButtonClick} isLoggedIn={isLoggedIn} />
-                <Main />
-                <Footer />
-              </>
-            } />
-            <Route path="movies" element={
-              <>
-                <Header isAuth={false} isMain={false} isNavBarOpen={isNavBarOpen} onNavBarButtonClick={handleNavBarButtonClick} isLoggedIn={isLoggedIn} />
-                <Container type="movies">
-                  <Movies />
-                </Container>
-                <Footer />
-              </>
-            } />
-            <Route path="saved-movies" element={
-              <>
-                <Header isAuth={false} isMain={false} isNavBarOpen={isNavBarOpen} onNavBarButtonClick={handleNavBarButtonClick} isLoggedIn={isLoggedIn} />
-                <Container type="movies">
-                  <SavedMovies />
-                </Container>
-                <Footer />
-              </>
-            } />
-            <Route path="profile" element={
-              <>
-                <Header isAuth={false} isMain={false} isNavBarOpen={isNavBarOpen} onNavBarButtonClick={handleNavBarButtonClick} isLoggedIn={isLoggedIn} />
-                <Container type="profile">
-                  <Profile onUpdateUser={handleUpdateUser} onSignOut={handleSignOut} />
-                </Container>
-              </>
-            } />
-            <Route path="*" element={
-              <PageNotFound />
-            } />
-          </Routes>
-          <NavBar isOpen={isNavBarOpen} onNavBarClick={handleNavBarClick} />
-          <ErrorPopup isOpen={isErrorPopupOpen} onClose={handleErrorPopupClose}/>
-        </div>
-      </body>
+      <div className="app">
+        {/* {pathname !== "*" && <Header />} */}
+        <Routes>
+          <Route path="signin" element={
+            <>
+              <Container type="auth">
+                <Header isAuth={true} isLoggedIn={false} isMain={false} />
+                <Login onSubmit={handleSignIn} />
+              </Container>
+            </>
+          } />
+          <Route path="signup" element={
+            <>
+              <Container type="auth">
+                <Header isAuth={true} isLoggedIn={false} isMain={false} />
+                <Register onSubmit={handleSignUp} />
+              </Container>
+            </>
+          } />
+          <Route path="/" element={
+            <>
+              <Header isAuth={false} isMain={true} isNavBarOpen={isNavBarOpen} onNavBarButtonClick={handleNavBarButtonClick} isLoggedIn={isLoggedIn} />
+              <Main />
+              <Footer />
+            </>
+          } />
+          <Route path="movies" element={
+            <>
+              <Header isAuth={false} isMain={false} isNavBarOpen={isNavBarOpen} onNavBarButtonClick={handleNavBarButtonClick} isLoggedIn={isLoggedIn} />
+              <Container type="movies">
+                <Movies />
+              </Container>
+              <Footer />
+            </>
+          } />
+          <Route path="saved-movies" element={
+            <>
+              <Header isAuth={false} isMain={false} isNavBarOpen={isNavBarOpen} onNavBarButtonClick={handleNavBarButtonClick} isLoggedIn={isLoggedIn} />
+              <Container type="movies">
+                <SavedMovies />
+              </Container>
+              <Footer />
+            </>
+          } />
+          <Route path="profile" element={
+            <>
+              <Header isAuth={false} isMain={false} isNavBarOpen={isNavBarOpen} onNavBarButtonClick={handleNavBarButtonClick} isLoggedIn={isLoggedIn} />
+              <Container type="profile">
+                <Profile onUpdateUser={handleUpdateUser} onSignOut={handleSignOut} />
+              </Container>
+            </>
+          } />
+          <Route path="*" element={
+            <PageNotFound />
+          } />
+        </Routes>
+        <NavBar isOpen={isNavBarOpen} onNavBarClick={handleNavBarClick} />
+        <ErrorPopup isOpen={isErrorPopupOpen} onClose={handleErrorPopupClose} />
+      </div>
     </CurrentUserContext.Provider>
   );
 }

@@ -14,7 +14,7 @@ export const Header = (props) => {
   }
 
   return (
-    <header className={`header ${props.isAuth ? 'header_type_auth' : null}`}>
+    <header className={`header ${props.isAuth ? 'header_type_auth' : ''}`}>
       <img className="header__logo" alt="Логотип" src={logo} onClick={toMainPage}/>
       {props.isLoggedIn ? (
         <>

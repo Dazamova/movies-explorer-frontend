@@ -10,7 +10,7 @@ import { Container } from "../Container/Container.js";
 export const Main = () => {
 
   return (
-    <section className="main">
+    <main className="main">
       <Container type="landing">
         <Promo>
           <NavTab />
@@ -22,6 +22,6 @@ export const Main = () => {
         <AboutMe />
         <Portfolio />
       </Container>
-    </section>
+    </main>
   )
 }

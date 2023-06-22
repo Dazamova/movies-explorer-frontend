@@ -3,7 +3,7 @@ import { SectionHeader } from "../SectionHeder/SectionHeader";
 
 export const AboutProject = () => {
   return (
-    <div className="about-project" id="aboutProject">
+    <section className="about-project" id="aboutProject">
       <SectionHeader header="О проекте"/>
       <div className="about-project__grid">
         <div className="about-project__grid-item">
@@ -25,6 +25,6 @@ export const AboutProject = () => {
           <div className="about-project__caption">Front-end</div>
         </div>
       </div>
-    </div>
+    </section>
   )
 }

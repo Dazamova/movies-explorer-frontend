@@ -5,7 +5,7 @@ export const AuthorisationForm = (props) => {
   const { pathname } = useLocation();
 
   return (
-    <div className="authorisation">
+    <main className="authorisation">
       {/* <div className="authorisation__container"> */}
         <h2 className="authorisation__heading">{props.header}</h2>
         <form name="authorisation-form" className="authorisation__form" onSubmit={props.onSubmit}>
@@ -22,6 +22,6 @@ export const AuthorisationForm = (props) => {
           </span>
         )}
       {/* </div> */}
-    </div>
+    </main>
   )
 }

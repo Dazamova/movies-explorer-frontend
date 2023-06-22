@@ -12,7 +12,7 @@ export const Movies = () => {
   // }
 
   return (
-    <div className="movies">
+    <main className="movies">
       <SearchForm />
       <MoviesCardList>
         {/* <MoviesCard title={title} duration={duration} link={image1} isSaved={isSaved} onSaveCard={saveCard} /> */}
@@ -30,6 +30,6 @@ export const Movies = () => {
         <MoviesCard title={title} duration={duration} link={image12} />
       </MoviesCardList>
       <button className="movies__button-load-more" type="button" aria-label="Загрузить еще">Ещё</button>
-    </div>
+    </main>
   )
 }

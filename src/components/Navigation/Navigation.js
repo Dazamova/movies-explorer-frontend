@@ -5,7 +5,7 @@ export const Navigation = (props) => {
 
   return (
     <div className={`navigation ${props.isNavBar ? 'navigation_type_nav-bar' : 'navigation_type_header'}`}>
-      <ul className={`navigation__pages ${props.isNavBar && 'navigation__pages_type_nav-bar'}`}>
+      <ul className={`navigation__pages ${props.isNavBar ? 'navigation__pages_type_nav-bar' : ''}`}>
 
         {props.isNavBar && (
           <li className="navigation__page">
