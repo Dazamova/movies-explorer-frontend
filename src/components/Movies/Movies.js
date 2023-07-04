@@ -5,6 +5,8 @@ import { MoviesCard } from "../MoviesCard/MoviesCard";
 import { MoviesApi } from "../../utils/MoviesApi";
 import { MainApi } from "../../utils/MainApi";
 import { ERROR_MESSAGE } from "../../utils/constants";
+import {  SHORTMOVIE_DURATION, DESKTOP_SCREENWIDTH, TABLET_SCREENWIDTH, DESKTOP_NUMBER_OF_CARDS, TABLET_NUMBER_OF_CARDS, MOBILE_NUMBER_OF_CARDS, DESKTOP_NUMBER_OF_ADDED_CARDS,
+  TABLET_NUMBER_OF_ADDED_CARDS, MOBILE_NUMBER_OF_ADDED_CARDS } from "../../utils/constants";
 
 export const Movies = (props) => {
   const { onError, screenWidth } = props;
@@ -86,7 +88,7 @@ export const Movies = (props) => {
       const nameEN = movie.nameEN.toLowerCase();
       const str = filterString.toLowerCase();
 
-      if (isShort && movie.duration > 40) {
+      if (isShort && movie.duration > SHORTMOVIE_DURATION) {
         return false;
       }
 
@@ -103,8 +105,8 @@ export const Movies = (props) => {
 
   //рендер фильмов в зависимости от ширины страницы
   const moviesToRender = React.useMemo(() => {
-    const countToRender = screenWidth < 768 ? 5 : screenWidth < 1280 ? 8 : 12;
-    const cardToRender = screenWidth < 768 ? 1 : screenWidth < 1280 ? 2 : 3;
+    const countToRender = screenWidth < TABLET_SCREENWIDTH ? MOBILE_NUMBER_OF_CARDS : screenWidth < DESKTOP_SCREENWIDTH ? TABLET_NUMBER_OF_CARDS : DESKTOP_NUMBER_OF_CARDS;
+    const cardToRender = screenWidth < TABLET_SCREENWIDTH ? MOBILE_NUMBER_OF_ADDED_CARDS : screenWidth < DESKTOP_SCREENWIDTH ? TABLET_NUMBER_OF_ADDED_CARDS : DESKTOP_NUMBER_OF_ADDED_CARDS;
 
     return filteredMovies.slice(0, countToRender + page * cardToRender);
   }, [filteredMovies, page, screenWidth]);

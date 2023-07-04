@@ -2,6 +2,7 @@ import React from "react";
 import { AuthorisationForm } from "../AuthorisationForm/AuthorisationForm";
 import { Input } from "../AuthorisationForm/Input/Input";
 import { useFormWithValidation } from "../../hooks/validation";
+import { INPUT_SETTINGS } from "../../utils/constants";
 
 export const Register = (props) => {
   const { onSubmit } = props;
@@ -35,8 +36,8 @@ export const Register = (props) => {
           type="text"
           onChange={handleInputChange}
           value={formValue.name || ''}
-          minLength="2"
-          maxLength="20"
+          minLength={INPUT_SETTINGS.name.minLength}
+          maxLength={INPUT_SETTINGS.name.maxLength}
           error={errors["name"]}
         />
         <Input
@@ -46,8 +47,8 @@ export const Register = (props) => {
           type="email"
           onChange={handleInputChange}
           value={formValue.email || ''}
-          minLength="6"
-          maxLength="40"
+          minLength={INPUT_SETTINGS.email.minLength}
+          maxLength={INPUT_SETTINGS.email.maxLength}
           error={errors["email"]}
         />
         <Input
@@ -57,8 +58,8 @@ export const Register = (props) => {
           type="password"
           onChange={handleInputChange}
           value={formValue.password || ''}
-          minLength="6"
-          maxLength="10"
+          minLength={INPUT_SETTINGS.password.minLength}
+          maxLength={INPUT_SETTINGS.password.maxLength}
           error={errors["password"]}
         />
       </>

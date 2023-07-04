@@ -4,6 +4,7 @@ import { MoviesCardList } from "../MoviesCardList/MoviesCardList";
 import { MoviesCard } from "../MoviesCard/MoviesCard";
 import { MainApi } from "../../utils/MainApi";
 import { ERROR_MESSAGE } from "../../utils/constants";
+import { SHORTMOVIE_DURATION } from "../../utils/constants";
 
 export const SavedMovies = (props) => {
   const { onError } = props;
@@ -12,7 +13,6 @@ export const SavedMovies = (props) => {
   const [search, setSearch] = React.useState(''); // переменная, хранящая в себе данные формы поиска по сохраненным фильмам
   const [filterString, setFilterString] = React.useState(null);
   const [isShort, setIsShort] = React.useState(false);
-  const [isSubmitButtonDisabled, setIsSubmitButtonDisabled] = React.useState(true);
   const [isMovieLoading, setIsMovieLoading] = React.useState(false);
 
   React.useEffect(() => {
@@ -37,22 +37,6 @@ export const SavedMovies = (props) => {
     setSearch(value);
   }
 
-  // получение фильмов и параметров поиска при монтировании
-  React.useEffect(() => {
-    const savedSearch = localStorage.getItem("savedMoviesSearch");
-    const savedIsShort = localStorage.getItem("savedMoviesIsShort");
-
-    if (savedSearch) {
-      setSearch(savedSearch);
-      setFilterString(savedSearch);
-      setIsSubmitButtonDisabled(false);
-    }
-
-    if (savedIsShort === "true") {
-      setIsShort(savedIsShort === "true");
-    }
-  }, []);
-
   function handleSubmit() {
     if (search === null) {
       console.log('error!')
@@ -72,15 +56,12 @@ export const SavedMovies = (props) => {
       const nameEN = movie.nameEN.toLowerCase();
       const str = filterString.toLowerCase();
 
-      if (isShort && movie.duration > 40) {
+      if (isShort && movie.duration > SHORTMOVIE_DURATION) {
         return false;
       }
 
       return nameRU.includes(str) || nameEN.includes(str);
     });
-
-    localStorage.setItem("savedMoviesSearch", filterString);
-    localStorage.setItem("savedMoviesIsShort", JSON.stringify(isShort));
 
     return filtered;
   }, [filterString, movies, isShort])
@@ -101,7 +82,7 @@ export const SavedMovies = (props) => {
 
   return (
     <main className="saved-movies">
-      <SearchForm search={search} isDisabled={isSubmitButtonDisabled} isShort={isShort} onSearch={handleSubmit} onSliderClick={handleIsShortMovie} onInputChange={handleInputChange} />
+      <SearchForm search={search} isShort={isShort} onSearch={handleSubmit} onSliderClick={handleIsShortMovie} onInputChange={handleInputChange} />
       <MoviesCardList isMovieLoading={isMovieLoading} isNotFound={notFound}>
         <>
           {filteredMovies.map((card) =>
