@@ -7,7 +7,7 @@ export const ErrorPopup = (props) => {
       <div className={`error-popup__container ${props.isOpen && "error-popup__container_opened"}`}>
         <button type="button" aria-label="Закрыть"
         className="error-popup__close-button" onClick={props.onClose}></button>
-        <p className='error-popup__message'>{props.errorMessage}Что-то пошло не так! ААААААА!!!</p>
+        <p className='error-popup__message'>{props.errorMessage}</p>
       </div>
     </div>
   );

@@ -1,16 +1,27 @@
-import image1 from '../images/movies-list/1.png';
-import image2 from '../images/movies-list/2.png';
-import image3 from '../images/movies-list/3.png';
-import image4 from '../images/movies-list/4.png';
-import image5 from '../images/movies-list/5.png';
-import image6 from '../images/movies-list/6.png';
-import image7 from '../images/movies-list/7.png';
-import image8 from '../images/movies-list/8.png';
-import image9 from '../images/movies-list/9.png';
-import image10 from '../images/movies-list/10.png';
-import image11 from '../images/movies-list/11.png';
-import image12 from '../images/movies-list/12.png';
+const ERROR_MESSAGE = 'Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз';
 
-const title = '33 слова о дизайне';
-const duration  = '1ч 47м';
-export { title, duration, image1, image2, image3, image4, image5, image6, image7, image8, image9, image10, image11, image12 };
+export { ERROR_MESSAGE };
+
+export const apiConfig = {
+  baseUrl: 'https://api.movies-scout.nomoredomains.monster',
+  // baseUrl: 'http://localhost:3000',
+  headers: {
+    'Content-Type': 'application/json'
+  }
+}
+
+export const moviesApiConfig = {
+  baseUrl: 'https://api.nomoreparties.co',
+  headers: {
+    'Content-Type': 'application/json'
+  }
+}
+
+// export const apiConfig = {
+//   baseUrl: 'https://api.mesto-travel.nomoredomains.monster',
+//   headers: {
+//     // 'Authorization': '08ca9b9b-5109-4975-909a-0b8f1b0ed24a',
+//     'Content-Type': 'application/json',
+//     'Accept': 'application/json'
+//   }
+// };

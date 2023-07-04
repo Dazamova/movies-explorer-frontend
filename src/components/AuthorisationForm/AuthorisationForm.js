@@ -12,7 +12,7 @@ export const AuthorisationForm = (props) => {
           <div className="authorisation__inputs">
             {props.children}
           </div>
-          <button name="submit" type="submit" className="authorisation__submit-button">{props.buttonText}</button>
+          <button name="submit" type="submit" className="authorisation__submit-button" disabled={props.disabled}>{props.buttonText}</button>
         </form>
         {pathname === '/signup' ? (
           <span className='authorisation__offer'>Уже зарегистрированы? <NavLink className="authorisation__link" to="/signin">Войти</NavLink>
