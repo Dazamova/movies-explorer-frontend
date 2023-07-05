@@ -1,19 +1,13 @@
 import React from "react";
 import { AuthorisationForm } from "../AuthorisationForm/AuthorisationForm";
 import { Input } from "../AuthorisationForm/Input/Input";
-import { useFormWithValidation } from "../../hooks/validation";
-import { INPUT_SETTINGS } from "../../utils/constants";
 
 export const Register = (props) => {
   const { onSubmit } = props;
   const [formValue, setFormValue] = React.useState('', '');
 
-  const { handleChange, errors } = useFormWithValidation();
-
-  const handleInputChange = (e) => {
+  const handleChange = (e) => {
     const { name, value } = e.target;
-
-    handleChange(e);
 
     setFormValue({
       ...formValue,
@@ -27,40 +21,38 @@ export const Register = (props) => {
   }
 
   return (
-    <AuthorisationForm disabled={errors["name"] || errors["email"] || errors["password"]} header="Добро пожаловать!" buttonText="Зарегистрироваться" onSubmit={handleSubmit} isDisplay={true}>
+    <AuthorisationForm header="Добро пожаловать!" buttonText="Зарегистрироваться" onSubmit={handleSubmit} isDisplay={true}>
       <>
         <Input
           inputName="Имя"
           name="name"
           id="name"
           type="text"
-          onChange={handleInputChange}
+          onChange={handleChange}
           value={formValue.name || ''}
-          minLength={INPUT_SETTINGS.name.minLength}
-          maxLength={INPUT_SETTINGS.name.maxLength}
-          error={errors["name"]}
+          minLength="2"
+          maxLength="20"
         />
         <Input
           inputName="E-mail"
           name="email"
           id="email"
           type="email"
-          onChange={handleInputChange}
+          onChange={handleChange}
           value={formValue.email || ''}
-          minLength={INPUT_SETTINGS.email.minLength}
-          maxLength={INPUT_SETTINGS.email.maxLength}
-          error={errors["email"]}
+          minLength="6"
+          maxLength="40"
         />
         <Input
           inputName="Пароль"
           name="password"
           id="password"
           type="password"
-          onChange={handleInputChange}
+          onChange={handleChange}
           value={formValue.password || ''}
-          minLength={INPUT_SETTINGS.password.minLength}
-          maxLength={INPUT_SETTINGS.password.maxLength}
-          error={errors["password"]}
+          minLength="6"
+          maxLength="10"
+          error="visible"
         />
       </>
     </AuthorisationForm>
