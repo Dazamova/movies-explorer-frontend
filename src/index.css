@@ -29,8 +29,8 @@
 @import url(./components/Register/Register.css);
 @import url(./components/Login/Login.css);
 @import url(./components/PageNotFound/PageNotFound.css);
-@import url(./components/MessagePopup/MessagePopup.css);
+/* @import url(./components/MessagePopup/MessagePopup.css); */
 @import url(./components/NavBar/NavBar.css);
 @import url(./components/Navigation/Navigation.css);
 @import url(./components/NavBarButton/NavBarButton.css);
-@import url(./components/ErrorPopup/ErrorPopup.css);
+@import url(./components/InfoPopup/InfoPopup.css);

@@ -2,6 +2,8 @@ import React from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import '../../index.css';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
+import { ProtectedRoute } from '../ProtectedRoute/ProtectedRoute';
+import { AuthProtectedRoute } from '../AuthProtectedRoute/AuthProtectedRoute';
 import { Main } from '../Main/Main.js';
 import { Header } from '../Header/Header';
 import { Footer } from '../Footer/Footer';
@@ -13,15 +15,21 @@ import { Profile } from '../Profile/Profile';
 import { PageNotFound } from '../PageNotFound/PageNotFound'
 import { Container } from '../Container/Container';
 import { NavBar } from '../NavBar/NavBar';
-import { ErrorPopup } from '../ErrorPopup/ErrorPopup';
+import { InfoPopup } from '../InfoPopup/InfoPopup';
+import { MainApi } from '../../utils/MainApi';
+import { DESKTOP_SCREENWIDTH } from '../../utils/constants';
+import { UPDATE_PROFILE_ERROR } from '../../utils/constants';
+import { SIGN_UP_ERROR } from '../../utils/constants';
+import { SIGN_IN_ERROR } from '../../utils/constants';
+import { UPDATE_PROFILE_MESSAGE } from '../../utils/constants';
 
 function App() {
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
-  const [currentUser, setCurrentUser] = React.useState({ name: 'Виталий', email: '' });
+  const [currentUser, setCurrentUser] = React.useState({ name: '', email: '' });
   const [isNavBarOpen, setIsNavBarOpen] = React.useState(false);
-  const [isErrorPopupOpen, setIsErrorPopupOpen] = React.useState(false);
-
+  const [isInfoPopupOpen, setIsInfoPopupOpen] = React.useState(false);
+  const [infoMessage, setInfoMessage] = React.useState('');
   const [screenWidth, setScreenWidth] = React.useState(window.innerWidth);
 
   function debounce(func, timeout = 300) {
@@ -34,11 +42,10 @@ function App() {
 
   const handleResize = React.useCallback(debounce(() => {
     setScreenWidth(window.innerWidth);
-    if (window.innerWidth > 1279) {
+    if (window.innerWidth > DESKTOP_SCREENWIDTH) {
       setIsNavBarOpen(false);
     }
   }, 700), [screenWidth]);
-
 
   React.useEffect(() => {
     window.addEventListener("resize", handleResize);
@@ -48,28 +55,68 @@ function App() {
     };
   }, [handleResize]);
 
+  // редактирование профиля пользователя
   function handleUpdateUser(formData) {
-    setCurrentUser(formData);
+    const name = formData.name;
+    const email = formData.email;
+
+    MainApi.updateProfile({ name, email }).then((data) => {
+      console.log(data);
+      setCurrentUser(data);
+      setIsInfoPopupOpen(true);
+      setInfoMessage(UPDATE_PROFILE_MESSAGE);
+    }).catch((rej) => {
+      setIsInfoPopupOpen(true);
+      setInfoMessage(UPDATE_PROFILE_ERROR);
+    })
   }
 
+  // регистрация пользователя и последующая авторизация, перенаправляет сразу на главную страницу
   function handleSignUp(formData) {
-    //эти данные нужно сохранить
-    setCurrentUser({ name: formData.name, email: formData.email });
-    navigate("/signin");
+    MainApi.signUp(formData).then(() => {
+      handleSignIn(formData);
+    }).catch((rej) => {
+      setIsInfoPopupOpen(true);
+      setInfoMessage(SIGN_UP_ERROR);
+    })
   }
 
   // авторизация пользователя - signIn
   function handleSignIn(formData) {
-    //из этих данных извлечь и установить имя пользователя
-    setCurrentUser((prevState) => ({ ...prevState, email: formData.email }));
-    console.log(currentUser);
-    setIsLoggedIn(true);
-    navigate("/");
+    const email = formData.email;
+    const password = formData.password;
+
+    MainApi.signIn({ email, password }).then((data) => {
+      setCurrentUser({ name: data.name, email: data.email })
+      setIsLoggedIn(true);
+      navigate("/movies");
+    }).catch((rej) => {
+      setIsInfoPopupOpen(true);
+      setInfoMessage(SIGN_IN_ERROR);
+    })
   }
 
+  // проверка наличия токена
+  React.useEffect(() => {
+    MainApi.checkAuth().then((user) => {
+      setCurrentUser(user);
+      setIsLoggedIn(true);
+      navigate({ replace: false });
+      // navigate("/");
+    }).catch(rej => {
+      console.log(rej)
+    })
+  }, [])
+
   function handleSignOut() {
-    navigate("/signin");
-    setIsLoggedIn(false);
+    MainApi.signOut().then(() => {
+      setCurrentUser({});
+      setIsLoggedIn(false);
+      localStorage.clear();
+      navigate("/")
+    }).catch(rej => {
+      console.log(rej)
+    })
   }
 
   function handleNavBarButtonClick() {
@@ -80,30 +127,38 @@ function App() {
     setIsNavBarOpen(false);
   }
 
-  function handleErrorPopupClose() {
-    setIsErrorPopupOpen(false);
+  function handleInfoPopupClose() {
+    setIsInfoPopupOpen(false);
+  }
+
+  function handleInfoPopupOpen(errMessage) {
+    setIsInfoPopupOpen(true);
+    setInfoMessage(errMessage);
   }
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="app">
-        {/* {pathname !== "*" && <Header />} */}
         <Routes>
           <Route path="signin" element={
-            <>
-              <Container type="auth">
-                <Header isAuth={true} isLoggedIn={false} isMain={false} />
-                <Login onSubmit={handleSignIn} />
-              </Container>
-            </>
+            <AuthProtectedRoute isLoggedIn={isLoggedIn}>
+              <>
+                <Container type="auth">
+                  <Header isAuth={true} isLoggedIn={false} isMain={false} />
+                  <Login onSubmit={handleSignIn} />
+                </Container>
+              </>
+            </AuthProtectedRoute>
           } />
           <Route path="signup" element={
-            <>
-              <Container type="auth">
-                <Header isAuth={true} isLoggedIn={false} isMain={false} />
-                <Register onSubmit={handleSignUp} />
-              </Container>
-            </>
+            <AuthProtectedRoute isLoggedIn={isLoggedIn}>
+              <>
+                <Container type="auth">
+                  <Header isAuth={true} isLoggedIn={false} isMain={false} />
+                  <Register onSubmit={handleSignUp} />
+                </Container>
+              </>
+            </AuthProtectedRoute>
           } />
           <Route path="/" element={
             <>
@@ -113,37 +168,43 @@ function App() {
             </>
           } />
           <Route path="movies" element={
-            <>
-              <Header isAuth={false} isMain={false} isNavBarOpen={isNavBarOpen} onNavBarButtonClick={handleNavBarButtonClick} isLoggedIn={isLoggedIn} />
-              <Container type="movies">
-                <Movies />
-              </Container>
-              <Footer />
-            </>
+            <ProtectedRoute isLoggedIn={isLoggedIn}>
+              <>
+                <Header isAuth={false} isMain={false} isNavBarOpen={isNavBarOpen} onNavBarButtonClick={handleNavBarButtonClick} isLoggedIn={isLoggedIn} />
+                <Container type="movies">
+                  <Movies onError={handleInfoPopupOpen} screenWidth={screenWidth} />
+                </Container>
+                <Footer />
+              </>
+            </ProtectedRoute>
           } />
           <Route path="saved-movies" element={
-            <>
-              <Header isAuth={false} isMain={false} isNavBarOpen={isNavBarOpen} onNavBarButtonClick={handleNavBarButtonClick} isLoggedIn={isLoggedIn} />
-              <Container type="movies">
-                <SavedMovies />
-              </Container>
-              <Footer />
-            </>
+            <ProtectedRoute isLoggedIn={isLoggedIn}>
+              <>
+                <Header isAuth={false} isMain={false} isNavBarOpen={isNavBarOpen} onNavBarButtonClick={handleNavBarButtonClick} isLoggedIn={isLoggedIn} />
+                <Container type="movies">
+                  <SavedMovies onError={handleInfoPopupOpen} />
+                </Container>
+                <Footer />
+              </>
+            </ProtectedRoute>
           } />
           <Route path="profile" element={
-            <>
-              <Header isAuth={false} isMain={false} isNavBarOpen={isNavBarOpen} onNavBarButtonClick={handleNavBarButtonClick} isLoggedIn={isLoggedIn} />
-              <Container type="profile">
-                <Profile onUpdateUser={handleUpdateUser} onSignOut={handleSignOut} />
-              </Container>
-            </>
+            <ProtectedRoute isLoggedIn={isLoggedIn}>
+              <>
+                <Header isAuth={false} isMain={false} isNavBarOpen={isNavBarOpen} onNavBarButtonClick={handleNavBarButtonClick} isLoggedIn={isLoggedIn} />
+                <Container type="profile">
+                  <Profile onUpdateUser={handleUpdateUser} onSignOut={handleSignOut} />
+                </Container>
+              </>
+            </ProtectedRoute>
           } />
           <Route path="*" element={
             <PageNotFound />
           } />
         </Routes>
         <NavBar isOpen={isNavBarOpen} onNavBarClick={handleNavBarClick} />
-        <ErrorPopup isOpen={isErrorPopupOpen} onClose={handleErrorPopupClose} />
+        <InfoPopup isOpen={isInfoPopupOpen} onClose={handleInfoPopupClose} infoMessage={infoMessage} />
       </div>
     </CurrentUserContext.Provider>
   );

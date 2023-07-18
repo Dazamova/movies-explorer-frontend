@@ -1,16 +1,49 @@
-import image1 from '../images/movies-list/1.png';
-import image2 from '../images/movies-list/2.png';
-import image3 from '../images/movies-list/3.png';
-import image4 from '../images/movies-list/4.png';
-import image5 from '../images/movies-list/5.png';
-import image6 from '../images/movies-list/6.png';
-import image7 from '../images/movies-list/7.png';
-import image8 from '../images/movies-list/8.png';
-import image9 from '../images/movies-list/9.png';
-import image10 from '../images/movies-list/10.png';
-import image11 from '../images/movies-list/11.png';
-import image12 from '../images/movies-list/12.png';
+const ERROR_MESSAGE = 'Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз';
+const SHORTMOVIE_DURATION = 40;
+const DESKTOP_SCREENWIDTH = 1279;
+const TABLET_SCREENWIDTH = 768;
+const DESKTOP_NUMBER_OF_CARDS = 12;
+const TABLET_NUMBER_OF_CARDS = 8;
+const MOBILE_NUMBER_OF_CARDS = 5;
+const DESKTOP_NUMBER_OF_ADDED_CARDS = 3;
+const TABLET_NUMBER_OF_ADDED_CARDS = 2;
+const MOBILE_NUMBER_OF_ADDED_CARDS = 1;
+const UPDATE_PROFILE_ERROR = "Ошибка при обновлении профиля! Попробуйте позже.";
+const SIGN_UP_ERROR = "Ошибка! Регистрация не удалась :(";
+const SIGN_IN_ERROR = "Ошибка! Проблема со входом :(";
+const UPDATE_PROFILE_MESSAGE = "Данные успешно сохранены!";
+const INPUT_SETTINGS = {
+  name: {
+    minLength: 2,
+    maxLength: 20,
+  },
+  email: {
+    minLength: 6,
+    maxLength: 40,
+  },
+  password: {
+    minLength: 6,
+    maxLength: 10,
+  }
+};
 
-const title = '33 слова о дизайне';
-const duration  = '1ч 47м';
-export { title, duration, image1, image2, image3, image4, image5, image6, image7, image8, image9, image10, image11, image12 };
+export {
+  ERROR_MESSAGE, DESKTOP_SCREENWIDTH, TABLET_SCREENWIDTH, UPDATE_PROFILE_ERROR, SIGN_UP_ERROR, SIGN_IN_ERROR,
+  INPUT_SETTINGS, UPDATE_PROFILE_MESSAGE, SHORTMOVIE_DURATION, DESKTOP_NUMBER_OF_CARDS, TABLET_NUMBER_OF_CARDS,
+  MOBILE_NUMBER_OF_CARDS, DESKTOP_NUMBER_OF_ADDED_CARDS,TABLET_NUMBER_OF_ADDED_CARDS, MOBILE_NUMBER_OF_ADDED_CARDS
+}
+
+export const apiConfig = {
+  baseUrl: 'https://api.movies-scout.nomoredomains.monster',
+  // baseUrl: 'http://localhost:3000',
+  headers: {
+    'Content-Type': 'application/json'
+  }
+}
+
+export const moviesApiConfig = {
+  baseUrl: 'https://api.nomoreparties.co',
+  headers: {
+    'Content-Type': 'application/json'
+  }
+}
